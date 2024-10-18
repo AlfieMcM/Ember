@@ -7,6 +7,6 @@ fn makeAdder (offset) {
   add
 }
 
-const adder = makeAdder(1);
+const adder = makeAdder(9);
 
 print(adder(10, 5))
