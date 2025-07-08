@@ -57,4 +57,6 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
 			);
 			Deno.exit(0);
 	}
+	// Add a fallback return to satisfy the return type
+	throw new Error("evaluate: Unhandled AST node type.");
 }
