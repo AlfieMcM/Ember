@@ -29,7 +29,9 @@ function eval_numeric_binary_expr(
 	} else if (operator == "*") {
 		result = lhs.value * rhs.value;
 	} else if (operator == "/") {
-		// TODO: Division by zero checks
+		if (rhs.value === 0) {
+			throw "Division by zero error";
+		}
 		result = lhs.value / rhs.value;
 	} else {
 		result = lhs.value % rhs.value;
@@ -104,11 +106,15 @@ export function eval_call_expr(expr: CallExpr, env: Environment): RuntimeVal {
 		const func = fn as FunctionValue;
 		const scope = new Environment(func.declarationEnv);
 
+		// Verify function arity matches
+		if (args.length !== func.parameters.length) {
+			throw `Function expected ${func.parameters.length} arguments but got ${args.length}`;
+		}
+
 		// Create the variables for the parameters list
 		for (let i = 0; i < func.parameters.length; i++) {
-			// TODO Check the bounds here.
-			// verify arity of function
 			const varname = func.parameters[i];
+			// Bounds check is now redundant since we verified arity
 			scope.declareVar(varname, args[i], false);
 		}
 
